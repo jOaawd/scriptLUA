@@ -1,0 +1,46 @@
+-- Script Hub
+
+-- Put your script IDs and names here
+local scripts = {
+    {id = 123456789, name = "Script1"},
+    {id = 987654321, name = "Script2"},
+    -- Add more scripts as needed
+}
+
+-- Function to load a script by its ID
+local function loadScript(scriptId)
+    local script = Instance.new("Script")
+    script.Source = game:GetObjects("rbxassetid://" .. scriptId)[1].Source
+    script.Parent = game:GetService("Workspace") -- You can change the parent as per your requirement
+end
+
+-- Function to create buttons for each script
+local function createButtons()
+    local buttonContainer = Instance.new("ScreenGui")
+    buttonContainer.Name = "ScriptHub"
+    buttonContainer.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 200, 0, 50 * #scripts)
+    frame.Position = UDim2.new(0.5, -100, 0.5, -25 * #scripts)
+    frame.BackgroundTransparency = 0.5
+    frame.BackgroundColor3 = Color3.new(0, 0, 0)
+    frame.BorderSizePixel = 0
+    frame.Parent = buttonContainer
+    
+    for i, scriptInfo in ipairs(scripts) do
+        local button = Instance.new("TextButton")
+        button.Size = UDim2.new(1, 0, 0, 50)
+        button.Position = UDim2.new(0, 0, 0, (i - 1) * 50)
+        button.Text = scriptInfo.name
+        button.BackgroundColor3 = Color3.new(0, 1, 0)
+        button.Parent = frame
+        
+        button.MouseButton1Click:Connect(function()
+            loadScript(scriptInfo.id)
+        end)
+    end
+end
+
+-- Call the function to create buttons when the game starts
+createButtons()
